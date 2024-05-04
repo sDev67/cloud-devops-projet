@@ -13,10 +13,63 @@ Le sujet comporte deux versions.
 * Ouvrir les ports de le Vm pour avoir accès à l’app en dehors de la VM 
 * Ecrire une documentation sur les variables a set dans Terraform
 
-## Prérequis
-Assurez-vous d'avoir les outils suivants :
-- Terraform
-- Azure CLI
+## Version AWS
+
+### Entrer dans le dossier `projet-version-aws`
+
+```bash
+cd projet-version-aws
+```
+
+## Variables à définir
+Avant de commencer, assurez-vous de définir les variables appropriées dans le fichier terraform.tfvars. Ce fichier contient les valeurs spécifiques à votre environnement et doit être créé à partir du modèle terraform.tfvars.example.
+
+```bash
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Assurez-vous de définir les variables suivantes :
+
+- `default_user`: Il s'agit du nom d'utilisateur par défaut pour accéder aux ressources créées par Terraform.
+- `access_key`: Il s'agit de la clé d'accès pour authentifier l'accès aux ressources.
+- `secret_key`: Il s'agit de la clé secrète associée à la clé d'accès pour authentifier l'accès aux ressources.
+
+Assurez-vous de remplir ces variables avec les valeurs appropriées pour votre environnement.
+
+## Commandes à exécuter
+
+Pour exécuter le projet, suivez les étapes ci-dessous :
+
+1. Initialisez Terraform en exécutant la commande suivante :
+
+   ```
+   terraform init
+   ```
+
+2. Vérifiez la configuration en exécutant la commande suivante :
+
+   ```
+   terraform plan
+   ```
+
+   Assurez-vous de vérifier les modifications proposées avant de continuer.
+
+3. Appliquez les modifications en exécutant la commande suivante :
+
+   ```
+   terraform apply
+   ```
+
+   Confirmez l'application des modifications lorsque vous y êtes invité.
+
+4. Pour détruire les ressources créées, exécutez la commande suivante :
+
+   ```
+   terraform destroy
+   ```
+
+   Confirmez la destruction des ressources lorsque vous y êtes invité.
+
 
 ## Version azure
 

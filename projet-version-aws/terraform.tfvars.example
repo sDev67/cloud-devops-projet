@@ -1,0 +1,8 @@
+default_user        = ""
+access_key          = ""
+secret_key          = ""
+key_name            = ""
+region              = ""
+security_group_name = ""
+ami                 = ""
+instance_type       = ""
