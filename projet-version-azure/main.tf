@@ -89,7 +89,7 @@ resource "azurerm_linux_virtual_machine" "example" {
 }
 
 resource "null_resource" "null_resource" {
-  depends_on = [azurerm_public_ip.example, local_file.private_key]
+  depends_on = [azurerm_linux_virtual_machine.example]
 
   connection {
     timeout = "2m"
