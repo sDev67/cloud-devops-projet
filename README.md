@@ -21,18 +21,34 @@ Le sujet comporte deux versions.
 cd projet-version-aws
 ```
 
-## Variables à définir
-Avant de commencer, assurez-vous de définir les variables appropriées dans le fichier terraform.tfvars. Ce fichier contient les valeurs spécifiques à votre environnement et doit être créé à partir du modèle terraform.tfvars.example.
 
-```bash
-cp terraform.tfvars.example terraform.tfvars
-```
+## Variables à définir
+
+Avant de commencer, assurez-vous de définir les variables appropriées dans le fichier terraform.tfvars. Ce fichier contient les valeurs spécifiques à votre environnement et doit être créé à partir du modèle terraform.tfvars.example.
 
 Assurez-vous de définir les variables suivantes :
 
 - `default_user`: Il s'agit du nom d'utilisateur par défaut pour accéder aux ressources créées par Terraform.
 - `access_key`: Il s'agit de la clé d'accès pour authentifier l'accès aux ressources.
 - `secret_key`: Il s'agit de la clé secrète associée à la clé d'accès pour authentifier l'accès aux ressources.
+- `key_name` : Il s'agit du nom de la pair de clés qui sera généré, vous pouvez mettre la valeur que vous souhaitez.
+- `region` : Il s'agit de la région ou l'EC2 sera déployé.
+- `security_group_name` : Il s'agit du nom du groupe name qui sera créer, vous pouvez mettre la valeur que vou souhaitez.
+- `ami`: il s'agit du code ami de l'ec2 à créer.
+- `insance_type` : il s'afit du type d'instance à créer.
+
+Voici des valeurs par défaut que vous pouvez utiliser pour allez plus vite :
+
+```
+default_user        = "ubuntu"
+access_key          = ""
+secret_key          = ""
+key_name            = "aws-key-pair"
+region              = "eu-west-3"
+security_group_name = "security_group_vm"
+ami                 = "ami-00ac45f3035ff009e"
+instance_type       = "t2.micro"
+```
 
 Assurez-vous de remplir ces variables avec les valeurs appropriées pour votre environnement.
 
