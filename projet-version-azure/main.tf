@@ -28,6 +28,11 @@ resource "azurerm_public_ip" "example" {
   allocation_method   = "Dynamic"
 }
 
+data "azurerm_public_ip" "example" {
+  name                = azurerm_public_ip.example.name
+  resource_group_name = azurerm_resource_group.example.name
+}
+
 resource "azurerm_network_interface" "example" {
   name                = var.network_interface_name
   location            = azurerm_resource_group.example.location
@@ -88,32 +93,6 @@ resource "azurerm_linux_virtual_machine" "example" {
   }
 }
 
-resource "null_resource" "null_resource" {
-  depends_on = [azurerm_linux_virtual_machine.example]
-
-  connection {
-    timeout = "2m"
-    type    = "ssh"
-    user    = var.admin_username
-    private_key = local_file.private_key.content
-    host    = azurerm_public_ip.example.ip_address
-    agent = false
-  }
-
-  provisioner "file" {
-    source      = "./script.sh"
-    destination = "/tmp/script.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo mv /tmp/script.sh ./",
-      "sudo chmod 777 ./script.sh",
-      "sudo ./script.sh"
-    ]
-  }
-}
-
 resource "azurerm_network_security_group" "example" {
   name                = "example-nsg"
   location            = azurerm_resource_group.example.location
@@ -148,8 +127,34 @@ resource "azurerm_network_security_rule" "allow_ssh" {
   network_security_group_name = azurerm_network_security_group.example.name
 }
 
-
 resource "azurerm_subnet_network_security_group_association" "example" {
   subnet_id                 = azurerm_subnet.example.id
   network_security_group_id = azurerm_network_security_group.example.id
+}
+
+
+resource "null_resource" "null_resource" {
+  depends_on = [azurerm_linux_virtual_machine.example]
+
+  connection {
+    timeout = "2m"
+    type    = "ssh"
+    user    = var.admin_username
+    private_key = local_file.private_key.content
+    host    = data.azurerm_public_ip.example.ip_address
+    agent = false
+  }
+
+  provisioner "file" {
+    source      = "./script.sh"
+    destination = "/tmp/script.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mv /tmp/script.sh ./",
+      "sudo chmod 777 ./script.sh",
+      "sudo ./script.sh"
+    ]
+  }
 }

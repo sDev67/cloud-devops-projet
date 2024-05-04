@@ -7,7 +7,7 @@ variable "location" {
 variable "resource_group_name" {
   description = "Name of the resource group"
   type        = string
-  default     = "cloud-resources"
+  default     = "cloud-cours-resources"
 }
 
 variable "virtual_network_name" {
