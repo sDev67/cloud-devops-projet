@@ -7,6 +7,19 @@ resource "azurerm_resource_group" "example" {
   location = var.location
 }
 
+resource "azurerm_public_ip" "example" {
+  name                = var.public_ip_name
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  allocation_method   = "Static"
+  sku = "Standard"
+}
+
+data "azurerm_public_ip" "example" {
+  name                = azurerm_public_ip.example.name
+  resource_group_name = azurerm_resource_group.example.name
+}
+
 resource "azurerm_virtual_network" "example" {
   name                = var.virtual_network_name
   address_space       = ["10.0.0.0/16"]
@@ -19,18 +32,6 @@ resource "azurerm_subnet" "example" {
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.2.0/24"]
-}
-
-resource "azurerm_public_ip" "example" {
-  name                = var.public_ip_name
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  allocation_method   = "Dynamic"
-}
-
-data "azurerm_public_ip" "example" {
-  name                = azurerm_public_ip.example.name
-  resource_group_name = azurerm_resource_group.example.name
 }
 
 resource "azurerm_network_interface" "example" {
@@ -134,10 +135,10 @@ resource "azurerm_subnet_network_security_group_association" "example" {
 
 
 resource "null_resource" "null_resource" {
-  depends_on = [azurerm_linux_virtual_machine.example]
+  depends_on = [azurerm_public_ip.example, azurerm_linux_virtual_machine.example]
 
   connection {
-    timeout = "2m"
+    timeout = "3m"
     type    = "ssh"
     user    = var.admin_username
     private_key = local_file.private_key.content
